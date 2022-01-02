@@ -76,7 +76,7 @@ def parse(content, strict=False, custom_tags_parser=None):
 
         if line.startswith(protocol.ext_x_bitrate):
             _parse_bitrate(line, state)
-            
+
         elif line.startswith(protocol.ext_x_targetduration):
             _parse_simple_parameter(line, data, float)
 
@@ -231,8 +231,13 @@ def _parse_key(line):
 
 def _parse_extinf(line, data, state, lineno, strict):
     chunks = line.replace(protocol.extinf + ':', '').split(',', 1)
+    attrs = {}
     if len(chunks) == 2:
-        duration, title = chunks
+        data, title = chunks
+        duration, other_attrs = data.split(" ", 1)
+        if other_attrs:
+            other_attrs = other_attrs.split(" ")
+            attrs = dict(tuple(map(lambda c: c.strip('"'), v.split('='))) for v in other_attrs)
     elif len(chunks) == 1:
         if strict:
             raise ParseError(lineno, line)
@@ -243,6 +248,7 @@ def _parse_extinf(line, data, state, lineno, strict):
         state['segment'] = {}
     state['segment']['duration'] = float(duration)
     state['segment']['title'] = title
+    state['segment']['attrs'] = attrs
 
 
 def _parse_ts_chunk(line, data, state):

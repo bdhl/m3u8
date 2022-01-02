@@ -9,13 +9,12 @@ import urllib.request
 
 def _parsed_url(url):
     parsed_url = urlparse(url)
-    prefix = parsed_url.scheme + '://' + parsed_url.netloc
-    base_path = posixpath.normpath(parsed_url.path + '/..')
+    prefix = parsed_url.scheme + "://" + parsed_url.netloc
+    base_path = posixpath.normpath(parsed_url.path + "/..")
     return urljoin(prefix, base_path)
 
 
 class DefaultHTTPClient:
-
     def __init__(self, proxies=None):
         self.proxies = proxies
 
@@ -33,7 +32,6 @@ class DefaultHTTPClient:
 
 
 class HTTPSHandler:
-
     def __new__(self, verify_ssl=True):
         context = ssl.create_default_context()
         if not verify_ssl:

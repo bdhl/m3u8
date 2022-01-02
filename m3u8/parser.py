@@ -263,7 +263,7 @@ def _parse_extinf(line, data, state, lineno, strict):
 
 def _parse_extgrp(line, data, state):
     chunks = line.replace(protocol.extgrp + ":", "").split(",", 1)
-    state["category"] = chunks[0] if chunks else None
+    data["category"] = chunks[0] if chunks else None
 
 
 def _parse_ts_chunk(line, data, state):

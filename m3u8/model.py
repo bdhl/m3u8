@@ -430,7 +430,7 @@ class Segment(BasePathMixin):
     def __init__(self, uri=None, base_uri=None, program_date_time=None, current_program_date_time=None,
                  duration=None, title=None, bitrate=None, byterange=None, cue_out=False, cue_out_start=False,
                  cue_in=False, discontinuity=False, key=None, scte35=None, scte35_duration=None,
-                 keyobject=None, parts=None, init_section=None, dateranges=None, gap_tag=None):
+                 keyobject=None, parts=None, init_section=None, dateranges=None, gap_tag=None, **kwargs):
         self.uri = uri
         self.duration = duration
         self.title = title
@@ -454,6 +454,8 @@ class Segment(BasePathMixin):
         self.dateranges = DateRangeList( [ DateRange(**daterange) for daterange in dateranges ] if dateranges else [] )
         self.gap_tag = gap_tag
 
+        for _key, _value in kwargs.items():
+            setattr(self, _key, _value)
         # Key(base_uri=base_uri, **key) if key else None
 
     def add_part(self, part):
